@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/kvs.dir/src/kvs.cc.o -o kvs  libcloudlab.a /usr/lib/x86_64-linux-gnu/libfmt.so.8.1.1 -Wl,--as-needed /usr/lib/x86_64-linux-gnu/libprotobuf.so /usr/lib/librocksdb.so /usr/lib/x86_64-linux-gnu/libevent.so /usr/lib/x86_64-linux-gnu/libevent_pthreads.so 

@@ -1,9 +1,0 @@
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/cloudlab.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/ctl.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/kvs.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/client.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/verifier.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/task1.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/test.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/edit_cache.dir
-/home/mahdi/Documents/Task1-mahdikoubaa1/build/CMakeFiles/rebuild_cache.dir

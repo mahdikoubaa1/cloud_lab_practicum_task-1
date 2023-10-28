@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcloudlab.a CMakeFiles/cloudlab.dir/lib/kvs.cc.o CMakeFiles/cloudlab.dir/lib/handler/api.cc.o CMakeFiles/cloudlab.dir/lib/handler/p2p.cc.o CMakeFiles/cloudlab.dir/lib/network/address.cc.o CMakeFiles/cloudlab.dir/lib/network/connection.cc.o CMakeFiles/cloudlab.dir/lib/network/server.cc.o CMakeFiles/cloudlab.dir/cloud.pb.cc.o
-/usr/bin/ranlib libcloudlab.a
