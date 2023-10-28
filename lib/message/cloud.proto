@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package cloud;
+
+message CloudMessage {
+  enum Type {
+    REQUEST = 0;
+    RESPONSE = 1;
+    NOTIFICATION = 2;
+  }
+
+  enum Operation {
+    // API operations
+    PUT = 0;
+    GET = 1;
+    DELETE = 2;
+  }
+
+  message KeyValuePair {
+    string key = 1;
+    string value = 2;
+  }
+
+  // type and operation
+  Type type = 1;
+  Operation operation = 2;
+
+  // return code and message
+  bool success = 3;
+  string message = 4;
+
+  // payload for API operations
+  repeated KeyValuePair kvp = 5;
+}
