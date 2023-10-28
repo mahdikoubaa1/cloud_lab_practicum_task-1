@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+749a712b660e5707d4e6687a1818ad63 cloud.pb.h

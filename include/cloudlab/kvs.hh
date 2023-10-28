@@ -1,6 +1,7 @@
 #ifndef CLOUDLAB_KVS_HH
 #define CLOUDLAB_KVS_HH
 
+#include "rocksdb/db.h"
 #include <deque>
 #include <filesystem>
 #include <set>
@@ -37,8 +38,13 @@ class KVS {
    * open - [boolean] Indicates if the KVS should be newly opened or the method
    * should only return the path.
    */
-  explicit KVS(const std::string& path = {}, bool open = false) : path{path} {
-    // TODO(you)
+  explicit KVS(const std::string& path = {"/tmp/kvs"}, bool open = false) : path{path} {
+    if (!open) {
+      rocksdb::Options options;
+      options.create_if_missing = true;
+      rocksdb::Status status = rocksdb::DB::Open(options, path, &db);
+    }
+    mtx.unlock();
   }
 
   ~KVS();
@@ -65,6 +71,7 @@ class KVS {
   std::filesystem::path path;
   rocksdb::DB* db{};
   std::mutex mtx;
+
 };
 
 }  // namespace cloudlab

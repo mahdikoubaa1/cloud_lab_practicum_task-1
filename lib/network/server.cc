@@ -14,6 +14,7 @@
 #include <event2/thread.h>
 #include <netdb.h>
 #include <sys/socket.h>
+#include "fmt/core.h"
 
 namespace cloudlab {
 
@@ -58,7 +59,6 @@ auto Server::server(const std::string &address, SPMCQueue<void *> &bev_queue)
 
   struct event_base *base{};
   struct evconnlistener *listener{};
-
   base = event_base_new();
   if (!base) {
     throw std::runtime_error{"could not initialize libevent\n"};
@@ -124,13 +124,14 @@ auto Server::server(const std::string &address, SPMCQueue<void *> &bev_queue)
 auto Server::worker(ServerHandler &handler, SPMCQueue<void *> &bev_queue)
     -> void {
   while (true) {
-    auto *bev = bev_queue.consume();
 
+    auto *bev = bev_queue.consume();
     // exit worker thread on nullptr
     if (!bev) return;
 
     Connection con{static_cast<void *>(bev)};
     handler.handle_connection(con);
+
 
     // re-enable event handler after connection handling
     bufferevent_enable(static_cast<struct bufferevent *>(bev), EV_READ);

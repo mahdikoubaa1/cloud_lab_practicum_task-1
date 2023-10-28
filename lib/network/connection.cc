@@ -8,6 +8,8 @@
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 
+#include <arpa/inet.h>
+#include <event2/event.h>
 #include <netdb.h>
 #include <unistd.h>
 
@@ -33,7 +35,6 @@ Connection::Connection(const SocketAddress& address) {
                   &req) != 0) {
     throw std::runtime_error("getaddrinfo() failed");
   }
-
   fd = socket(req->ai_family, req->ai_socktype, req->ai_protocol);
   if (fd == -1) {
     throw std::runtime_error("socket() failed");
@@ -41,6 +42,13 @@ Connection::Connection(const SocketAddress& address) {
 
   // TODO(you): perform the socket connection.
   // see: setsockopt and connect
+  const int enable = 1;
+
+  if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+    throw std::runtime_error("setsockopt() failed");
+
+  if (connect(fd, (req->ai_addr), sizeof(*req->ai_addr)) < 0)
+    throw std::runtime_error("connect() failed");
 
   freeaddrinfo(req);
 }
@@ -59,13 +67,27 @@ Connection::~Connection() {
  * be used. See https://developers.google.com/protocol-buffers/docs/cpptutorial
  */
 auto Connection::receive(cloud::CloudMessage& msg) const -> bool {
-  // TODO(you): de-serialize message
-  return {};
+  char a[max_message_size] = {};
+  if (fd == -1) {
+    if (bufferevent_read(static_cast<bufferevent*>(bev), a, max_message_size) <
+        0)
+      return false;
+  }
+
+  else if (read(fd, a, max_message_size) < 0)
+    return false;
+  return msg.ParseFromString(std::string(a));
 }
 
 auto Connection::send(const cloud::CloudMessage& msg) const -> bool {
-  // TODO(you): serialize message
-  return {};
+  std::string s;
+  if (!msg.SerializePartialToString(&s)) return false;
+  if (fd == -1) {
+    return bufferevent_write(static_cast<bufferevent*>(bev), s.c_str(),
+                             s.length()) >= 0;
+  }
+
+  return  (write(fd, s.c_str(), s.length()) < 0);
 }
 
 }  // namespace cloudlab
